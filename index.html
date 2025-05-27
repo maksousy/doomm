@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Friend Roast Machine 🔥</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff9ff3, #54a0ff);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ff6b6b;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { text-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 0 40px rgba(255, 107, 107, 0.3); }
+        }
+
+        .subtitle {
+            color: #ffa502;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            border: 2px solid #ff4757;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: #ffa502;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 3px solid #ff6b6b;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ffa502;
+            box-shadow: 0 0 20px rgba(255, 165, 2, 0.5);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .trait-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .trait-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .trait-group h3 {
+            color: #ffa502;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .trait-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .trait-btn {
+            background: rgba(255, 107, 107, 0.2);
+            color: white;
+            border: 1px solid #ff6b6b;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .trait-btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+
+        .trait-btn.selected {
+            background: #ff6b6b;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .roast-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .roast-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .roast-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .roast-result {
+            background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+            border: 3px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+
+        .roast-result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .roast-text {
+            color: #ff6b6b;
+            font-size: 1.4rem;
+            font-weight: bold;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+        }
+
+        .roast-rating {
+            color: #ffa502;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .share-section {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: rgba(255, 165, 2, 0.2);
+            color: #ffa502;
+            border: 1px solid #ffa502;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .share-btn:hover {
+            background: #ffa502;
+            color: black;
+        }
+
+        .fire-emoji {
+            font-size: 2rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .trait-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 FRIEND ROAST MACHINE 🔥</h1>
+        <p class="subtitle">Professional Friend Destroyer 3000™</p>
+        
+        <div class="warning">
+            ⚠️ WARNING: Use responsibly! This machine generates Grade-A premium roasts ⚠️
+        </div>
+
+        <div class="input-section">
+            <label for="friendName">Enter Your Friend's Name:</label>
+            <input type="text" id="friendName" placeholder="Who's getting roasted today?" maxlength="20">
+        </div>
+
+        <div class="trait-selector">
+            <div class="trait-group">
+                <h3>Physical Traits</h3>
+                <div class="trait-options">
+                    <button class="trait-btn" data-trait="tall">Tall</button>
+                    <button class="trait-btn" data-trait="short">Short</button>
+                    <button class="trait-btn" data-trait="skinny">Skinny</button>
+                    <button class="trait-btn" data-trait="chubby">Chubby</button>
+                    <button class="trait-btn" data-trait="bald">Bald</button>
+                    <button class="trait-btn" data-trait="hairy">Very Hairy</button>
+                </div>
+            </div>
+
+            <div class="trait-group">
+                <h3>Personality</h3>
+                <div class="trait-options">
+                    <button class="trait-btn" data-trait="annoying">Annoying</button>
+                    <button class="trait-btn" data-trait="lazy">Lazy</button>
+                    <button class="trait-btn" data-trait="tryhard">Try-hard</button>
+                    <button class="trait-btn" data-trait="dramatic">Dramatic</button>
+                    <button class="trait-btn" data-trait="cheap">Cheap</button>
+                    <button class="trait-btn" data-trait="weird">Weird</button>
+                </div>
+            </div>
+
+            <div class="trait-group">
+                <h3>Lifestyle</h3>
+                <div class="trait-options">
+                    <button class="trait-btn" data-trait="gamer">Gamer</button>
+                    <button class="trait-btn" data-trait="gym">Gym Rat</button>
+                    <button class="trait-btn" data-trait="foodie">Foodie</button>
+                    <button class="trait-btn" data-trait="social">Social Media Addict</button>
+                    <button class="trait-btn" data-trait="messy">Messy</button>
+                    <button class="trait-btn" data-trait="parent">New Parent</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="roast-btn" onclick="generateRoast()">
+            <span class="fire-emoji">🔥</span> ROAST MY FRIEND <span class="fire-emoji">🔥</span>
+        </button>
+
+        <div id="roastResult" class="roast-result">
+            <div class="roast-text" id="roastText"></div>
+            <div class="roast-rating" id="roastRating"></div>
+            <div class="share-section">
+                <button class="share-btn" onclick="copyRoast()">📋 Copy Roast</button>
+                <button class="share-btn" onclick="generateRoast()">🔄 New Roast</button>
+                <button class="share-btn" onclick="saveRoast()">💾 Save This Burn</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTraits = [];
+        let currentRoast = '';
+
+        // Roast templates organized by traits
+        const roastTemplates = {
+            tall: [
+                "How's the weather up there, {name}? Oh wait, you wouldn't know because you're too busy hitting your head on door frames.",
+                "{name} is so tall, they have to duck to walk through their own expectations in life.",
+                "I heard NASA contacted {name} to be a human satellite. No rocket needed!"
+            ],
+            short: [
+                "{name} is so short, they need a ladder to reach their low standards.",
+                "I've seen garden gnomes with more presence than {name}.",
+                "{name} could play mini golf on a regular golf course and still need a handicap."
+            ],
+            skinny: [
+                "{name} is so skinny, they have to run around in the shower to get wet.",
+                "I've seen more meat on a chicken nugget than on {name}.",
+                "{name} could hide behind a flagpole and we'd lose them for hours."
+            ],
+            chubby: [
+                "{name} is on a seafood diet - they see food and eat it, then see more food and eat that too.",
+                "When {name} steps on a scale, it shows their phone number.",
+                "{name}'s belt has more miles on it than a frequent flyer."
+            ],
+            bald: [
+                "{name}'s hairline retreated faster than their dating prospects.",
+                "I can see what {name} is thinking - literally, through their scalp.",
+                "{name}'s head is so shiny, ships use it to navigate at night."
+            ],
+            hairy: [
+                "{name} is so hairy, Sasquatch filed a copyright infringement lawsuit.",
+                "When {name} takes off their shirt, it looks like they're wearing a sweater underneath.",
+                "Barbers charge {name} landscaping rates."
+            ],
+            annoying: [
+                "{name} is the human equivalent of a mosquito - always buzzing around where they're not wanted.",
+                "If {name} was a notification, everyone would turn off their phone.",
+                "{name} could make a monk break their vow of silence just to tell them to shut up."
+            ],
+            lazy: [
+                "{name} is so lazy, they'd rather starve than make a sandwich.",
+                "I've seen sloths with more motivation than {name}.",
+                "{name} gets tired watching other people exercise on TV."
+            ],
+            tryhard: [
+                "{name} tries so hard, they make participation trophies look like genuine achievements.",
+                "If effort was currency, {name} would still be broke because they're spending it all wrong.",
+                "{name} is the kind of person who practices small talk in the mirror."
+            ],
+            dramatic: [
+                "{name} turns every minor inconvenience into a Shakespeare tragedy.",
+                "If {name} was a movie genre, they'd be a soap opera that never ends.",
+                "{name} could stub their toe and write a 3-act play about the experience."
+            ],
+            cheap: [
+                "{name} is so cheap, they reuse birthday candles until they're just wick.",
+                "When {name} goes to a restaurant, they ask for the kids menu... and they're 30.",
+                "{name} counts ketchup packets as groceries."
+            ],
+            weird: [
+                "{name} is so weird, even their shadow tries to distance itself.",
+                "If normal was a destination, {name} would need GPS, a map, and a miracle.",
+                "{name} makes conspiracy theorists seem reasonable."
+            ],
+            gamer: [
+                "{name} has spent more time in virtual worlds than the real one - and honestly, we can tell.",
+                "The only thing {name} levels up faster than their character is their vitamin D deficiency.",
+                "{name}'s idea of outdoor activity is opening a window while gaming."
+            ],
+            gym: [
+                "{name} talks about the gym more than they actually go to the gym.",
+                "The only thing {name} lifts consistently is everyone's expectations... then drops them.",
+                "{name} counts walking to the fridge as cardio."
+            ],
+            foodie: [
+                "{name} calls themselves a foodie, but their idea of fine dining is adding hot sauce to instant ramen.",
+                "The only culture {name} appreciates is the bacteria growing in their fridge.",
+                "{name} takes more photos of their food than they have friends - which explains the ratio."
+            ],
+            social: [
+                "{name} posts so much on social media, their phone battery dies faster than their relationships.",
+                "If {name}'s social media was a job, they'd be CEO of Oversharing Industries.",
+                "{name} livestreams themselves sleeping and still gets no viewers."
+            ],
+            messy: [
+                "{name}'s room is so messy, archaeologists could discover lost civilizations in there.",
+                "I've seen crime scenes with better organization than {name}'s living space.",
+                "{name} could lose themselves in their own bedroom."
+            ],
+            parent: [
+                "{name} went from party animal to party planning committee for a 2-year-old's birthday.",
+                "The only thing {name} rocks now is a crying baby at 3 AM.",
+                "{name}'s idea of a wild night is staying up past 9 PM... voluntarily."
+            ]
+        };
+
+        // Generic roasts for when no traits are selected
+        const genericRoasts = [
+            "{name} is proof that evolution can go in reverse.",
+            "I'd explain why you're wrong, {name}, but I don't have the time or the crayons.",
+            "{name} is like a Monday morning - nobody's excited to see them.",
+            "If {name} was a spice, they'd be flour.",
+            "{name} is the reason why aliens won't visit Earth.",
+            "I've met houseplants with more personality than {name}.",
+            "{name} is living proof that not all heroes wear capes... because they're not a hero.",
+            "If {name} was a movie, they'd be a direct-to-DVD sequel nobody asked for."
+        ];
+
+        // Handle trait selection
+        document.querySelectorAll('.trait-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const trait = this.dataset.trait;
+                
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedTraits = selectedTraits.filter(t => t !== trait);
+                } else {
+                    this.classList.add('selected');
+                    selectedTraits.push(trait);
+                }
+            });
+        });
+
+        function generateRoast() {
+            const friendName = document.getElementById('friendName').value.trim();
+            
+            if (!friendName) {
+                alert('Enter your friend\'s name first, you coward!');
+                return;
+            }
+
+            let roast;
+            
+            if (selectedTraits.length > 0) {
+                // Pick a random trait and get a roast for it
+                const randomTrait = selectedTraits[Math.floor(Math.random() * selectedTraits.length)];
+                const traitRoasts = roastTemplates[randomTrait];
+                roast = traitRoasts[Math.floor(Math.random() * traitRoasts.length)];
+            } else {
+                // Use generic roast
+                roast = genericRoasts[Math.floor(Math.random() * genericRoasts.length)];
+            }
+
+            // Replace {name} with actual name
+            roast = roast.replace(/{name}/g, friendName);
+            currentRoast = roast;
+
+            // Generate roast rating
+            const ratings = [
+                "🔥 Roast Level: NUCLEAR MELTDOWN",
+                "🌶️ Spice Level: GHOST PEPPER", 
+                "💀 Destruction Level: TOTAL ANNIHILATION",
+                "🎯 Accuracy: SNIPER PRECISION",
+                "⚡ Impact Level: LIGHTNING STRIKE",
+                "🧨 Explosive Level: DYNAMITE",
+                "🔥 Heat Level: SURFACE OF THE SUN"
+            ];
+            
+            const rating = ratings[Math.floor(Math.random() * ratings.length)];
+
+            // Display roast
+            document.getElementById('roastText').textContent = roast;
+            document.getElementById('roastRating').textContent = rating;
+            document.getElementById('roastResult').classList.add('show');
+
+            // Scroll to result
+            document.getElementById('roastResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyRoast() {
+            if (currentRoast) {
+                navigator.clipboard.writeText(currentRoast).then(() => {
+                    alert('Roast copied! Now go destroy your friend! 🔥');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = currentRoast;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Roast copied! Time to serve it hot! 🔥');
+                });
+            }
+        }
+
+        function saveRoast() {
+            if (currentRoast) {
+                const savedRoasts = JSON.parse(localStorage.getItem('savedRoasts') || '[]');
+                savedRoasts.push({
+                    roast: currentRoast,
+                    date: new Date().toLocaleDateString(),
+                    target: document.getElementById('friendName').value
+                });
+                localStorage.setItem('savedRoasts', JSON.stringify(savedRoasts));
+                alert('Roast saved to your collection! Building quite the arsenal! 😈');
+            }
+        }
+
+        // Allow Enter key to generate roast
+        document.getElementById('friendName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateRoast();
+            }
+        });
+    </script>
+</body>
+</html>
